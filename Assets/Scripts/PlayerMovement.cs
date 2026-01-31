@@ -16,9 +16,12 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded;
     private bool isFacingRight = true;
 
+    private Animator anim;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -33,10 +36,18 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+
+            if (anim != null)
+            {
+                anim.SetTrigger("Jump");
+            }            
         }
 
         // 3. Flip Karakter (Kiri/Kanan)
         FlipSprite();
+        
+        // 4. Update Animasi Walk
+        UpdateAnimations(); 
     }
 
     void FixedUpdate()
@@ -44,6 +55,18 @@ public class PlayerMovement : MonoBehaviour
         // 4. Gerakkan Karakter (Fisika sebaiknya di FixedUpdate)
         rb.velocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
     }
+
+    void UpdateAnimations()
+    {
+        // Jika ada input (kiri/kanan tidak 0), Walk = true. Jika diam (0), Walk = false.
+        bool isWalking = horizontalInput != 0;
+        
+        if (anim != null)
+        {
+            anim.SetBool("Walk", isWalking);
+            anim.SetBool("Down", !isGrounded);
+        }
+    }    
 
     void FlipSprite()
     {

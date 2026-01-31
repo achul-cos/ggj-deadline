@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MaskSlotUI : MonoBehaviour
 {
     [Header("UI Components")]
     public GameObject borderActive;    // Drag objek Border_Water ke sini
     public Image cooldownOverlay;      // Drag CooldownOverlay
-    public Text cooldownText;          // Drag CooldownText
+    public TextMeshProUGUI cooldownText;          // Drag CooldownText
     public Image maskIcon;             // Drag Mask_Slot_Water (Image)
 
     public void SetActiveState(bool isActive)

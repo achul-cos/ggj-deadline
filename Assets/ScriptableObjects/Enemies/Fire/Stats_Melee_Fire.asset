@@ -15,10 +15,10 @@ MonoBehaviour:
   enemyName: Fire Fighter
   element: 0
   maxHealth: 30
-  moveSpeed: 4
+  moveSpeed: 6
   attackDamage: 5
-  attackRange: 1.5
+  attackRange: 3
   attackCooldown: 2
   projectilePrefab: {fileID: 0}
-  detectionRange: 10
-  stopChaseRange: 15
+  detectionRange: 15
+  stopChaseRange: 20

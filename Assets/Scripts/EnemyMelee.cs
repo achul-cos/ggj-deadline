@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyMelee : EnemyBase
 {
     private float lastAttackTime;
+    private SpriteRenderer bodyRenderer;
     private Rigidbody2D rb;
 
     protected override void Start()
@@ -12,6 +13,11 @@ public class EnemyMelee : EnemyBase
         
         // Safety check
         if (rb == null) Debug.LogError("Rigidbody2D hilang di musuh: " + gameObject.name);
+
+        if (bodySprite != null)
+        {
+            bodyRenderer = bodySprite.GetComponent<SpriteRenderer>();
+        }        
     }
 
     void Update()
@@ -59,9 +65,25 @@ public class EnemyMelee : EnemyBase
             rb.velocity = new Vector2(direction * stats.moveSpeed, rb.velocity.y);
         }
 
-        // Flip Sprite
-        if (direction > 0) transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
-        else transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
+        // --- FLIP PAKAI SPRITE RENDERER (Flip X) ---
+        if (bodyRenderer != null)
+        {
+            // Jika gerak ke KANAN (direction > 0) -> Jangan di-flip (Asumsi gambar asli menghadap kanan)
+            // Jika gerak ke KIRI (direction < 0) -> Flip X aktif
+            
+            if (direction > 0)
+                bodyRenderer.flipX = false; 
+            else if (direction < 0)
+                bodyRenderer.flipX = true;
+        }
+        // Fallback: Kalau bodyRenderer gak ketemu, pakai cara lama (Scale)
+        else if (bodySprite != null)
+        {
+             if (direction > 0) 
+                bodySprite.localScale = new Vector3(Mathf.Abs(bodySprite.localScale.x), bodySprite.localScale.y, 1);
+            else 
+                bodySprite.localScale = new Vector3(-Mathf.Abs(bodySprite.localScale.x), bodySprite.localScale.y, 1);
+        }       
     }
 
     void StopMoving()

@@ -4,9 +4,22 @@ using System.Collections.Generic;
 
 public class PlayerSkillManager : MonoBehaviour
 {
-    [Header("Current Mask")]
-    public List<MaskData> availableMasks;
-    public MaskData currentMask; // Drag mask awal di sini (misal Mask_Fire)
+    [Header("Mask Data (Urutan: 0=Water, 1=Fire, 2=Wood, 3=Ice)")]
+    public List<MaskData> availableMasks; 
+
+    [Header("UI Slots (Urutan Harus Sama dengan Data!)")]
+    public MaskSlotUI uiSlotWater; // Slot 1
+    public MaskSlotUI uiSlotFire;  // Slot 2
+    public MaskSlotUI uiSlotWood;  // Slot 3
+    public MaskSlotUI uiSlotIce;   // Slot 4
+
+    [Header("Swap Settings")]
+    public float swapCooldownDuration = 5f;
+    private float swapTimer = 0f;
+
+    [Header("Current State")]
+    public MaskData currentMask;
+    private int currentMaskIndex = -1; // -1 artinya belum ada        
 
     private SkillData skillI; // Private aja, diisi otomatis dari mask
     private SkillData skillO;
@@ -26,21 +39,23 @@ public class PlayerSkillManager : MonoBehaviour
 
     void Start()
     {
-        anim = GetComponent<Animator>();
+        // anim = GetComponent<Animator>();
 
-        // --- LOGIKA RANDOM MASK ---
-        if (availableMasks != null && availableMasks.Count > 0)
-        {
-            // Pilih indeks acak dari 0 sampai jumlah mask
-            int randomIndex = Random.Range(0, availableMasks.Count);
+        // // --- LOGIKA RANDOM MASK ---
+        // if (availableMasks != null && availableMasks.Count > 0)
+        // {
+        //     // Pilih indeks acak dari 0 sampai jumlah mask
+        //     int randomIndex = Random.Range(0, availableMasks.Count);
             
-            // Pasang mask terpilih
-            EquipMask(availableMasks[randomIndex]);
-        }
-        else
-        {
-            Debug.LogError("List 'Available Masks' di Inspector KOSONG! Masukkan data mask dulu.");
-        }           
+        //     // Pasang mask terpilih
+        //     EquipMask(availableMasks[randomIndex]);
+        // }
+        // else
+        // {
+        //     Debug.LogError("List 'Available Masks' di Inspector KOSONG! Masukkan data mask dulu.");
+        // }
+
+        TrySwitchMask(0, true);
     }
     
     public void EquipMask(MaskData newMask)
@@ -65,8 +80,85 @@ public class PlayerSkillManager : MonoBehaviour
         Debug.Log("Ganti Mask ke: " + newMask.maskName);
     }    
 
+    // Fungsi Mencoba Ganti Mask
+    public void TrySwitchMask(int targetIndex, bool ignoreCooldown = false)
+    {
+        // Validasi Index
+        if (targetIndex < 0 || targetIndex >= availableMasks.Count) return;
+
+        // Validasi Logic Game
+        if (!ignoreCooldown)
+        {
+            // Jika sedang cooldown, tolak
+            if (swapTimer > 0) return;
+
+            // Jika menekan mask yang SAMA, tolak
+            if (targetIndex == currentMaskIndex) return;
+        }
+
+        // --- LAKUKAN PERGANTIAN ---
+        
+        // 1. Set Data
+        currentMaskIndex = targetIndex;
+        MaskData newMask = availableMasks[currentMaskIndex];
+        
+        // 2. Equip Skill (Panggil fungsi EquipMask lama kamu)
+        EquipMask(newMask); 
+
+        // 3. Reset Global Cooldown
+        if (!ignoreCooldown)
+        {
+            swapTimer = swapCooldownDuration;
+        }
+        
+        // 4. Update Border Aktif (Visual)
+        HighlightActiveSlot(currentMaskIndex);
+    }
+
+    void UpdateAllMaskUI()
+    {
+        // Kirim data timer yang sama ke semua slot
+        if(uiSlotWater) uiSlotWater.UpdateCooldownVisual(swapTimer, swapCooldownDuration);
+        if(uiSlotFire) uiSlotFire.UpdateCooldownVisual(swapTimer, swapCooldownDuration);
+        if(uiSlotWood) uiSlotWood.UpdateCooldownVisual(swapTimer, swapCooldownDuration);
+        if(uiSlotIce) uiSlotIce.UpdateCooldownVisual(swapTimer, swapCooldownDuration);
+    }
+
+    void HighlightActiveSlot(int index)
+    {
+        // Matikan semua border dulu
+        if(uiSlotWater) uiSlotWater.SetActiveState(false);
+        if(uiSlotFire) uiSlotFire.SetActiveState(false);
+        if(uiSlotWood) uiSlotWood.SetActiveState(false);
+        if(uiSlotIce) uiSlotIce.SetActiveState(false);
+
+        // Nyalakan yang terpilih
+        switch (index)
+        {
+            case 0: if(uiSlotWater) uiSlotWater.SetActiveState(true); break;
+            case 1: if(uiSlotFire) uiSlotFire.SetActiveState(true); break;
+            case 2: if(uiSlotWood) uiSlotWood.SetActiveState(true); break;
+            case 3: if(uiSlotIce) uiSlotIce.SetActiveState(true); break;
+        }
+    }    
+
     void Update()
     {
+        // 1. Update Timer Global Cooldown
+        if (swapTimer > 0)
+        {
+            swapTimer -= Time.deltaTime;
+        }
+
+        // 2. Update Visual UI (Semua slot cooldownnya SAMA/SERENTAK)
+        UpdateAllMaskUI();
+
+        // 3. Input Keyboard (1, 2, 3, 4)
+        if (Input.GetKeyDown(KeyCode.Alpha1)) TrySwitchMask(0); // Water
+        if (Input.GetKeyDown(KeyCode.Alpha2)) TrySwitchMask(1); // Fire
+        if (Input.GetKeyDown(KeyCode.Alpha3)) TrySwitchMask(2); // Wood
+        if (Input.GetKeyDown(KeyCode.Alpha4)) TrySwitchMask(3); // Ice
+
         // Update Timer Cooldown (dikurangi waktu berjalan)
         if (cooldownTimerI > 0) cooldownTimerI -= Time.deltaTime;
         if (cooldownTimerO > 0) cooldownTimerO -= Time.deltaTime;
