@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50b574e59b18f404a88b3d5171796a33, type: 3}
+  m_Name: Fire
+  m_EditorClassIdentifier: 
+  maskName: Holy Fire
+  maskElement: 0
+  maskSprite: {fileID: 0}
+  skill_I: {fileID: 11400000, guid: 7b49e51fc2e70e34390a55de5446fe79, type: 2}
+  skill_O: {fileID: 11400000, guid: b48392dd2e9bb564891439a53cbc33bf, type: 2}
+  skill_P: {fileID: 11400000, guid: 11e91b184cc42794097ecb51d065e616, type: 2}
