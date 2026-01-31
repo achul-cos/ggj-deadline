@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skill_O_Fire
   m_EditorClassIdentifier: 
   skillName: Fire II
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 5c5f4a1023f1d5244b5a3704f3b38ae4, type: 3}
   element: 0
   cooldownTime: 2
   damage: 8

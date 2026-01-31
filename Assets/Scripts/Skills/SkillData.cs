@@ -5,6 +5,8 @@ public enum ElementType { Fire, Water, Ice, Wood }
 [CreateAssetMenu(fileName = "New Skill", menuName = "Skill System/Skill Data")]
 public class SkillData : ScriptableObject
 {
+    public enum ElementType { Fire, Water, Ice, Wood }
+    
     [Header("Identity")]
     public string skillName;
     public Sprite icon;       // Untuk UI nanti

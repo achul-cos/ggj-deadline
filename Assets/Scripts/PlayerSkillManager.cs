@@ -1,11 +1,16 @@
 using UnityEngine;
 
+using System.Collections.Generic; 
+
 public class PlayerSkillManager : MonoBehaviour
 {
-    [Header("Skills")]
-    public SkillData skillI;
-    public SkillData skillO;
-    public SkillData skillP;
+    [Header("Current Mask")]
+    public List<MaskData> availableMasks;
+    public MaskData currentMask; // Drag mask awal di sini (misal Mask_Fire)
+
+    private SkillData skillI; // Private aja, diisi otomatis dari mask
+    private SkillData skillO;
+    private SkillData skillP;
 
     [Header("UI References")] // TAMBAHAN BARU
     public SkillUI uiSkillI;
@@ -22,26 +27,43 @@ public class PlayerSkillManager : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        // Pastikan cooldown mulai dari 0 (siap pakai)
+
+        // --- LOGIKA RANDOM MASK ---
+        if (availableMasks != null && availableMasks.Count > 0)
+        {
+            // Pilih indeks acak dari 0 sampai jumlah mask
+            int randomIndex = Random.Range(0, availableMasks.Count);
+            
+            // Pasang mask terpilih
+            EquipMask(availableMasks[randomIndex]);
+        }
+        else
+        {
+            Debug.LogError("List 'Available Masks' di Inspector KOSONG! Masukkan data mask dulu.");
+        }           
+    }
+    
+    public void EquipMask(MaskData newMask)
+    {
+        currentMask = newMask;
+
+        // 1. Bongkar isi mask, masukkan ke slot skill aktif
+        skillI = newMask.skill_I;
+        skillO = newMask.skill_O;
+        skillP = newMask.skill_P;
+
+        // 2. Update UI Icon otomatis
+        if(uiSkillI) uiSkillI.SetSkillIcon(skillI.icon);
+        if(uiSkillO) uiSkillO.SetSkillIcon(skillO.icon);
+        if(uiSkillP) uiSkillP.SetSkillIcon(skillP.icon);
+        
+        // 3. Reset Cooldown (Opsional: biar gak cheat ganti mask buat reset skill)
         cooldownTimerI = 0;
         cooldownTimerO = 0;
         cooldownTimerP = 0;
 
-        // Setup Icon di awal
-        if(uiSkillI) uiSkillI.SetSkillIcon(skillI.icon);
-        if(uiSkillO) uiSkillO.SetSkillIcon(skillO.icon);
-        if(uiSkillP) uiSkillP.SetSkillIcon(skillP.icon);    
-        
-        // KITA PAKSA UPDATE ICON DI SINI
-        if (uiSkillI != null && skillI != null) 
-            uiSkillI.SetSkillIcon(skillI.icon); // Ambil icon dari data I, kirim ke UI I
-
-        if (uiSkillO != null && skillO != null) 
-            uiSkillO.SetSkillIcon(skillO.icon);
-
-        if (uiSkillP != null && skillP != null) 
-            uiSkillP.SetSkillIcon(skillP.icon);            
-    }
+        Debug.Log("Ganti Mask ke: " + newMask.maskName);
+    }    
 
     void Update()
     {
