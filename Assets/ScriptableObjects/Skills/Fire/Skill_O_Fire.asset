@@ -17,6 +17,6 @@ MonoBehaviour:
   element: 0
   cooldownTime: 2
   damage: 8
-  effectPrefab: {fileID: 0}
+  effectPrefab: {fileID: 4819526098252575123, guid: cfbac00fd11cfb546a887de6e71a488a, type: 3}
   animationTrigger: 
   effectDuration: 1

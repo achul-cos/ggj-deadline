@@ -15,8 +15,8 @@ MonoBehaviour:
   skillName: Water I
   icon: {fileID: 21300000, guid: aaf3aed7c10da994485f3fd466050dcd, type: 3}
   element: 1
-  cooldownTime: 1
-  damage: 5
-  effectPrefab: {fileID: 0}
+  cooldownTime: 0.5
+  damage: 4
+  effectPrefab: {fileID: 5763897998583326057, guid: 54cd3c0793678934d9ed81eb99c7b146, type: 3}
   animationTrigger: 
   effectDuration: 1

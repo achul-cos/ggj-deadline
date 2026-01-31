@@ -198,21 +198,57 @@ public class PlayerSkillManager : MonoBehaviour
         // 1. Set Cooldown
         currentCooldown = skill.cooldownTime;
 
-        // 2. Mainkan Animasi (jika ada)
-        if (!string.IsNullOrEmpty(skill.animationTrigger) && anim != null)
-        {
-            anim.SetTrigger(skill.animationTrigger);
-        }
+        // Tentukan posisi & arah
+        Vector3 spawnPos = transform.position;
+        Vector2 facingDir = new Vector2(transform.localScale.x > 0 ? 1 : -1, 0);   
 
-        // 3. Spawn Efek Skill (Logic Serangan)
-        // Kita spawn efek di posisi player, sedikit ke depan
+        // Spawn Prefab
         if (skill.effectPrefab != null)
         {
-            Vector3 spawnPos = transform.position + (transform.right * (transform.localScale.x > 0 ? 1 : -1)); 
-            GameObject effect = Instantiate(skill.effectPrefab, spawnPos, Quaternion.identity);
+            GameObject skillObj = Instantiate(skill.effectPrefab, spawnPos, Quaternion.identity);
+
+            // -- LOGIKA DETEKSI TIPE SKILL --
             
-            // Hancurkan efek setelah durasi selesai
-            Destroy(effect, skill.effectDuration);
-        }
+            // Cek apakah ini Skill 1?
+            var melee = skillObj.GetComponent<SkillBehavior_MeleeAOE>();
+            if (melee) 
+            {
+                melee.transform.parent = this.transform; // Nempel ke player
+                melee.Initialize(skill.damage, skill.element, skill.effectDuration);
+            }
+
+            // Cek apakah ini Skill 2?
+            var proj = skillObj.GetComponent<SkillBehavior_Projectile>();
+            if (proj)
+            {
+                // Geser spawn dikit ke depan biar gak nabrak badan sendiri
+                skillObj.transform.position += (Vector3)facingDir * 1.0f; 
+                proj.Initialize(skill.damage, skill.element, skill.effectDuration, facingDir);
+            }
+
+            // Cek apakah ini Skill 3?
+            var nuke = skillObj.GetComponent<SkillBehavior_ScreenNuke>();
+            if (nuke)
+            {
+                nuke.Initialize(skill.damage, skill.element, skill.effectDuration);
+            }
+        }             
+
+        // // 2. Mainkan Animasi (jika ada)
+        // if (!string.IsNullOrEmpty(skill.animationTrigger) && anim != null)
+        // {
+        //     anim.SetTrigger(skill.animationTrigger);
+        // }
+
+        // // 3. Spawn Efek Skill (Logic Serangan)
+        // // Kita spawn efek di posisi player, sedikit ke depan
+        // if (skill.effectPrefab != null)
+        // {
+        //     Vector3 spawnPos = transform.position + (transform.right * (transform.localScale.x > 0 ? 1 : -1)); 
+        //     GameObject effect = Instantiate(skill.effectPrefab, spawnPos, Quaternion.identity);
+            
+        //     // Hancurkan efek setelah durasi selesai
+        //     Destroy(effect, skill.effectDuration);
+        // }
     }
 }

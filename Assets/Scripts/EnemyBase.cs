@@ -15,7 +15,7 @@ public class EnemyBase : MonoBehaviour
     public TextMeshPro textName;    // Drag Object 'Text (TMP)'
     public SpriteRenderer elementBadge;     
 
-    protected float currentHealth;
+    public float currentHealth;
     protected Transform player;
 
     private Vector3 initialBarScale;
@@ -63,6 +63,9 @@ public class EnemyBase : MonoBehaviour
         }
 
         currentHealth -= finalDamage;
+
+        UpdateHealthUI(); 
+
         if (currentHealth <= 0) Die();
     }
 

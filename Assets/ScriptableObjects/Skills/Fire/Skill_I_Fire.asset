@@ -15,8 +15,8 @@ MonoBehaviour:
   skillName: Fire I
   icon: {fileID: 21300000, guid: 476145b5e544df147a8f9d79f95b1dfb, type: 3}
   element: 0
-  cooldownTime: 1
-  damage: 5
-  effectPrefab: {fileID: 0}
+  cooldownTime: 0.5
+  damage: 4
+  effectPrefab: {fileID: 8103429493872909127, guid: 2213644c6477927449a83660eaf9467d, type: 3}
   animationTrigger: 
   effectDuration: 1

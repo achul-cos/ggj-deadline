@@ -72,9 +72,9 @@ public class EnemyMelee : EnemyBase
             // Jika gerak ke KIRI (direction < 0) -> Flip X aktif
             
             if (direction > 0)
-                bodyRenderer.flipX = false; 
+                bodyRenderer.flipX = true; 
             else if (direction < 0)
-                bodyRenderer.flipX = true;
+                bodyRenderer.flipX = false;
         }
         // Fallback: Kalau bodyRenderer gak ketemu, pakai cara lama (Scale)
         else if (bodySprite != null)
