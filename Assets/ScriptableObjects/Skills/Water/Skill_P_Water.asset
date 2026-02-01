@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Skill_P_Water
   m_EditorClassIdentifier: 
   skillName: Water III
-  icon: {fileID: 21300000, guid: 11ceaa87c40bb0344a0238dd450f160f, type: 3}
+  icon: {fileID: 21300000, guid: ca0651c3578db5c4cab97688fa83b5b2, type: 3}
   element: 1
   cooldownTime: 5
   damage: 12
-  effectPrefab: {fileID: 0}
+  effectPrefab: {fileID: 2348155258628663628, guid: 786c1f1c898b5c541aa16de005f58074, type: 3}
   animationTrigger: 
   effectDuration: 1

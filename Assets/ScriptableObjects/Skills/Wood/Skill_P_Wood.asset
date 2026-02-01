@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Skill_P_Wood
   m_EditorClassIdentifier: 
   skillName: Wood III
-  icon: {fileID: 21300000, guid: 20de6cc91edd6134ca062fd6f702f98a, type: 3}
+  icon: {fileID: 21300000, guid: ca0651c3578db5c4cab97688fa83b5b2, type: 3}
   element: 3
   cooldownTime: 5
   damage: 12
-  effectPrefab: {fileID: 0}
+  effectPrefab: {fileID: 7878004442004086427, guid: edaad6c9b5c30dc46a64ab61edb2539c, type: 3}
   animationTrigger: 
   effectDuration: 1

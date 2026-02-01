@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skill_O_Water
   m_EditorClassIdentifier: 
   skillName: Water II
-  icon: {fileID: 21300000, guid: f2afd3a045f98824e8138c33c9d25913, type: 3}
+  icon: {fileID: 21300000, guid: 0ec3ba54aa1feb34fa72020b9f3f223b, type: 3}
   element: 1
   cooldownTime: 2
   damage: 8

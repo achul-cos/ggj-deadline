@@ -10,6 +10,7 @@ public class EnemyMelee : EnemyBase
     {
         base.Start(); 
         rb = GetComponent<Rigidbody2D>();
+        // anim = GetComponent<Animator>();
         
         // Safety check
         if (rb == null) Debug.LogError("Rigidbody2D hilang di musuh: " + gameObject.name);

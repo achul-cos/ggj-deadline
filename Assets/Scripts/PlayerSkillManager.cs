@@ -37,6 +37,10 @@ public class PlayerSkillManager : MonoBehaviour
 
     private Animator anim;
 
+    public AudioClip skillMeleeSFX;
+    public AudioClip skillProjectileSFX;
+    public AudioClip skillNukeSFX;
+
     void Start()
     {
         // anim = GetComponent<Animator>();
@@ -189,66 +193,70 @@ public class PlayerSkillManager : MonoBehaviour
     }
 
     // Fungsi helper untuk menjalankan skill
-    void ActivateSkill(SkillData skill, ref float currentCooldown)
+    void ActivateSkill(SkillData skill, ref float currentTimer)
     {
         if (skill == null) return;
 
         Debug.Log($"Menggunakan Skill: {skill.skillName}");
 
-        // 1. Set Cooldown
-        currentCooldown = skill.cooldownTime;
+        currentTimer = skill.cooldownTime;
 
-        // Tentukan posisi & arah
-        Vector3 spawnPos = transform.position;
-        Vector2 facingDir = new Vector2(transform.localScale.x > 0 ? 1 : -1, 0);   
+        // 1. Tentukan Arah Hadap Player
+        // Scale X positif = Kanan (1), Negatif = Kiri (-1)
+        float facingSign = transform.localScale.x > 0 ? 1 : -1;
+        Vector2 facingDir = new Vector2(facingSign, 0);   
 
-        // Spawn Prefab
         if (skill.effectPrefab != null)
         {
+            Vector3 spawnPos = transform.position;
             GameObject skillObj = Instantiate(skill.effectPrefab, spawnPos, Quaternion.identity);
 
-            // -- LOGIKA DETEKSI TIPE SKILL --
+            // --- LOGIKA FLIP SPRITE ---
+            SpriteRenderer skillSR = skillObj.GetComponent<SpriteRenderer>();
             
-            // Cek apakah ini Skill 1?
+            // Jika player hadap kiri (-1), FLIP X aktif
+            if (skillSR != null && facingSign < 0)
+            {
+                skillSR.flipX = true; 
+            }
+            // Jika hadap kanan, pastikan flip mati
+            else if (skillSR != null)
+            {
+                skillSR.flipX = false;
+            }
+            // ---------------------------
+
+            // -- INITIALIZE BEHAVIOR --
+            
             var melee = skillObj.GetComponent<SkillBehavior_MeleeAOE>();
             if (melee) 
             {
-                melee.transform.parent = this.transform; // Nempel ke player
+                melee.transform.parent = this.transform; 
                 melee.Initialize(skill.damage, skill.element, skill.effectDuration);
+                AudioManager.Instance.PlaySFX(skillMeleeSFX);
             }
 
-            // Cek apakah ini Skill 2?
             var proj = skillObj.GetComponent<SkillBehavior_Projectile>();
             if (proj)
             {
-                // Geser spawn dikit ke depan biar gak nabrak badan sendiri
+                // Geser spawn ke depan (offset)
                 skillObj.transform.position += (Vector3)facingDir * 1.0f; 
+                
+                // PENTING: Walaupun gambarnya cuma di-flipX, 
+                // Logika geraknya (direction) harus tetap dikirim sesuai facingDir (-1 ke kiri)
+                // Jadi script Projectile akan menggerakkan transform ke kiri.
+                
                 proj.Initialize(skill.damage, skill.element, skill.effectDuration, facingDir);
+                AudioManager.Instance.PlaySFX(skillProjectileSFX);
             }
 
-            // Cek apakah ini Skill 3?
             var nuke = skillObj.GetComponent<SkillBehavior_ScreenNuke>();
             if (nuke)
             {
                 nuke.Initialize(skill.damage, skill.element, skill.effectDuration);
+                AudioManager.Instance.PlaySFX(skillNukeSFX);
             }
-        }             
-
-        // // 2. Mainkan Animasi (jika ada)
-        // if (!string.IsNullOrEmpty(skill.animationTrigger) && anim != null)
-        // {
-        //     anim.SetTrigger(skill.animationTrigger);
-        // }
-
-        // // 3. Spawn Efek Skill (Logic Serangan)
-        // // Kita spawn efek di posisi player, sedikit ke depan
-        // if (skill.effectPrefab != null)
-        // {
-        //     Vector3 spawnPos = transform.position + (transform.right * (transform.localScale.x > 0 ? 1 : -1)); 
-        //     GameObject effect = Instantiate(skill.effectPrefab, spawnPos, Quaternion.identity);
-            
-        //     // Hancurkan efek setelah durasi selesai
-        //     Destroy(effect, skill.effectDuration);
-        // }
+        }            
     }
+
 }

@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
 
     private Animator anim;
 
+    public AudioClip jumpSound; 
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -40,7 +42,9 @@ public class PlayerMovement : MonoBehaviour
             if (anim != null)
             {
                 anim.SetTrigger("Jump");
-            }            
+            }
+
+            AudioManager.Instance.PlaySFX(jumpSound);
         }
 
         // 3. Flip Karakter (Kiri/Kanan)

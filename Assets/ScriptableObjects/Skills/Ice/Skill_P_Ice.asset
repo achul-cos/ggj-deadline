@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Skill_P_Ice
   m_EditorClassIdentifier: 
   skillName: Ice III
-  icon: {fileID: 21300000, guid: 10fe5af66b07ba543a0db8c9e4596c24, type: 3}
+  icon: {fileID: 21300000, guid: ca0651c3578db5c4cab97688fa83b5b2, type: 3}
   element: 2
   cooldownTime: 5
   damage: 12
-  effectPrefab: {fileID: 0}
+  effectPrefab: {fileID: 3013116044219061776, guid: 2d5105d5f6a50714c8aadd1f02a9f132, type: 3}
   animationTrigger: 
   effectDuration: 1
