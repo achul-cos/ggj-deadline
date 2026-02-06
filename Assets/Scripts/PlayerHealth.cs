@@ -56,10 +56,10 @@ public class PlayerHealth : MonoBehaviour
 
     void Update() // HAPUS NANTI KALAU SUDAH JADI
     {
-        if (Input.GetKeyDown(KeyCode.K)) // Tekan K buat sakitin diri sendiri
-        {
-            TakeDamage(10);
-        }
+        //if (Input.GetKeyDown(KeyCode.K)) // Tekan K buat sakitin diri sendiri
+        //{
+        //    TakeDamage(10);
+        //}
     }    
 
     void Die()

@@ -601,12 +601,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: d0c6989ca0215d648abbe1964d9ea8b7, type: 2}
+  currentHealth: 0
   bodySprite: {fileID: 4618443851322169528}
   healthBarFill: {fileID: 8580348087195056209}
   textHealth: {fileID: 813328527990611450}
   textName: {fileID: 6828957955957839837}
   elementBadge: {fileID: 11591712119128241}
-  currentHealth: 0
+  damagePopupPrefab: {fileID: 8786472330700390428, guid: 7273e7c2e60951e4bbe7027d46fbb996, type: 3}
+  hitPosition: {fileID: 0}
+  enemyAttackSFX: {fileID: 8300000, guid: 32ebc27e620f4144289df807a7b57b26, type: 3}
 --- !u!1 &7866243394824956332
 GameObject:
   m_ObjectHideFlags: 0

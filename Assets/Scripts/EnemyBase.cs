@@ -5,6 +5,7 @@ public class EnemyBase : MonoBehaviour
 {
     [Header("Data & Stats")]
     public EnemyStats stats; // Drag data stat di sini
+    public float currentHealth;
 
     [Header("Visual References")]
     public Transform bodySprite;    // Anak yang isinya gambar musuh (untuk di-flip)
@@ -13,9 +14,12 @@ public class EnemyBase : MonoBehaviour
     public Transform healthBarFill; // Drag Object 'HealthBarFill' (Kotak Merah)
     public TextMeshPro textHealth;  // Drag Object 'HealthText'
     public TextMeshPro textName;    // Drag Object 'Text (TMP)'
-    public SpriteRenderer elementBadge;     
+    public SpriteRenderer elementBadge;
 
-    public float currentHealth;
+    [Header("Combat Effect")]
+    public GameObject damagePopupPrefab;
+    public Transform hitPosition;
+
     protected Transform player;
 
     private Vector3 initialBarScale;
@@ -67,6 +71,20 @@ public class EnemyBase : MonoBehaviour
         UpdateHealthUI(); 
 
         if (currentHealth <= 0) Die();
+    }
+
+    public void SpawnDamagePopup(float damageAmount)
+    {
+        if (damagePopupPrefab != null)
+        {
+            Vector3 spawnPos = player.position;
+
+            if (hitPosition != null) spawnPos = hitPosition.position;
+
+            GameObject popup = Instantiate(damagePopupPrefab, spawnPos, Quaternion.Euler(0, 0, 0), player);
+
+            popup.GetComponent<DamagePopup>()?.Setup(damageAmount);
+        }
     }
 
     protected bool IsWeakAgainst(SkillData.ElementType attackElement)

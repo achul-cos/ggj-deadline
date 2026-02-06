@@ -16,9 +16,9 @@ MonoBehaviour:
   element: 0
   maxHealth: 30
   moveSpeed: 6
-  attackDamage: 5
+  attackDamage: 15
   attackRange: 3
-  attackCooldown: 2
+  attackCooldown: 1
   projectilePrefab: {fileID: 0}
   detectionRange: 15
   stopChaseRange: 20

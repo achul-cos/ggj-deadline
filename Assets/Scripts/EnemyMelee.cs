@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyMelee : EnemyBase
@@ -5,6 +6,8 @@ public class EnemyMelee : EnemyBase
     private float lastAttackTime;
     private SpriteRenderer bodyRenderer;
     private Rigidbody2D rb;
+
+    public AudioClip enemyAttackSFX;
 
     protected override void Start()
     {
@@ -98,8 +101,24 @@ public class EnemyMelee : EnemyBase
 
     void Attack()
     {
-        Debug.Log("Jleb! Musuh Serang!");
-        // Animasi & Damage code...
+        if (player != null)
+        {
+            PlayerHealth ph = player.GetComponent<PlayerHealth>();
+
+            if (ph != null)
+            { 
+                if (ph.currentHealth <= 0) return; // Player sudah mati, jangan serang lagi
+
+                ph.TakeDamage(stats.attackDamage);
+
+                SpawnDamagePopup(stats.attackDamage);
+
+                AudioManager.Instance.PlaySFX(enemyAttackSFX);
+
+            }
+
+        }
+
     }
 
     // VISUALISASI DEBUG (Biar kelihatan lingkaran radiusnya di Scene View)
