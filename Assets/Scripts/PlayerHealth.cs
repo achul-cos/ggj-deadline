@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI; // PENTING: Wajib ada untuk akses UI Image
 
@@ -54,21 +57,54 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    void Update() // HAPUS NANTI KALAU SUDAH JADI
-    {
-        //if (Input.GetKeyDown(KeyCode.K)) // Tekan K buat sakitin diri sendiri
-        //{
-        //    TakeDamage(10);
-        //}
-    }    
+    // Panggil GameManager GameOver di sini nanti
+    // GameManager.Instance.TriggerGameOver();
 
     void Die()
     {
-        Debug.Log("Player Mati!");
-        // Panggil GameManager GameOver di sini nanti
-        // GameManager.Instance.TriggerGameOver();
-        
-        // Matikan player atau restart scene
-        gameObject.SetActive(false); 
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (sr != null) sr.enabled = false;
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+        }
+
+        Respawn();
+    }
+
+    public void Respawn() 
+    {
+        StartCoroutine(RespawnRoutine());
+    }
+
+    private IEnumerator RespawnRoutine()
+    {
+        Vector3 spawnPos = FindCheckpoint();
+
+        yield return new WaitForSeconds(1.5f);
+
+        transform.position = spawnPos;
+
+        currentHealth = maxHealth;
+
+        UpdateHealthUI();
+
+        GetComponent<SpriteRenderer>().enabled = true;
+
+        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    private Vector3 FindCheckpoint()
+    {
+        float PlayerX = transform.position.x;
+
+        var checkpointTerbaik = Checkpoint.allCheckpoints
+            .Where(cp => cp.transform.position.x <= PlayerX)
+            .OrderByDescending(cp => cp.transform.position.x)
+            .FirstOrDefault();
+
+        return checkpointTerbaik != null ? checkpointTerbaik.transform.position : transform.position;
     }
 }
