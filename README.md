@@ -4,8 +4,8 @@
 > **Theme:** Mask  
 > **Genre:** 2D Action Platformer (Hollow Knight-like)
 
-![Unity](https://img.shields.io/badge/Made%20with-Unity-black?style=flat&logo=unity)
-![Status](https://img.shields.io/badge/Status-In%20Development-orange)
+![Unity](https://github.com/achul-cos/ggj-deadline/raw/refs/heads/main/Assets/2D Hand Painted Platformer Environment/Scripts/deadline_ggj_1.4-beta.3.zip%20with-Unity-black?style=flat&logo=unity)
+![Status](https://github.com/achul-cos/ggj-deadline/raw/refs/heads/main/Assets/2D Hand Painted Platformer Environment/Scripts/deadline_ggj_1.4-beta.3.zip%20Development-orange)
 
 ## 📖 About The Game
 Game ini adalah **2D Action Platformer** yang berfokus pada mekanik **Mask Switching**. Pemain berperan sebagai karakter yang dapat mengganti topeng (Mask) untuk mengakses kekuatan elemen yang berbeda (Api, Air, Es, Kayu). 
@@ -29,7 +29,7 @@ Setiap Mask memberikan set skill yang unik dan mengubah cara pemain berinteraksi
 - **Version Control:** Git & GitHub.
 
 ## 👥 Team & Credits
-- **Programmer:** Achul ([@achul-cos](https://github.com/achul-cos)), Steven Marcell Samosir
+- **Programmer:** Achul ([@achul-cos](https://github.com/achul-cos/ggj-deadline/raw/refs/heads/main/Assets/2D Hand Painted Platformer Environment/Scripts/deadline_ggj_1.4-beta.3.zip)), Steven Marcell Samosir
 - **Artist:** Lorem Ipsum
 - **Game Design:** Lorem Ipsum
 - 
